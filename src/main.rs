@@ -2,6 +2,7 @@ use actix_web::{web, App, HttpServer, Responder};
 use std::io;
 
 mod schema;
+mod types;
 
 fn index() -> impl Responder {
     "Hello from actix"

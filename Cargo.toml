@@ -1,0 +1,9 @@
+[package]
+name = "graphql-pokeapi"
+version = "0.1.0"
+authors = ["Steve Sweetney <stevesweetney@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+actix-web = "1.0.0"
+juniper = "0.12.0"

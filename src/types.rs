@@ -4,27 +4,27 @@ use serde::{Deserialize, Serialize};
 pub struct TypeResponse {
     slot: u32,
     #[serde(rename = "type")]
-    type_data: Data,
+    pub type_data: Data,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct MoveResponse {
     #[serde(rename = "move")]
-    move_data: Data,
+    pub move_data: Data,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Data {
-    url: String,
-    name: String,
+    pub url: String,
+    pub name: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PokemonResponse {
-    id: i32,
-    name: String,
-    moves: Vec<MoveResponse>,
-    types: Vec<TypeResponse>,
+    pub id: i32,
+    pub name: String,
+    pub moves: Vec<MoveResponse>,
+    pub types: Vec<TypeResponse>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -38,6 +38,42 @@ pub struct MoveDetailResponse {
     id: i32,
     name: String,
     effect_entries: Vec<EffectEntry>,
+}
+
+pub mod convert {
+    use super::*;
+    use crate::schema::{Move, Pokemon, Type};
+
+    pub fn response_to_pokemon(res: PokemonResponse) -> Pokemon {
+        let id = res.id;
+        let name = res.name;
+        let types: Vec<Type> = res
+            .types
+            .iter()
+            .map(|type_res| {
+                type_res
+                    .type_data
+                    .name
+                    .parse()
+                    .expect("Could not parse type name")
+            })
+            .collect();
+        let moves: Vec<Move> = res
+            .moves
+            .iter()
+            .map(|move_res| Move {
+                url: move_res.move_data.url.clone(),
+                name: move_res.move_data.name.clone(),
+            })
+            .collect();
+
+        Pokemon {
+            id,
+            name,
+            types,
+            moves,
+        }
+    }
 }
 
 #[cfg(test)]

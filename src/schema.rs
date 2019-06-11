@@ -50,8 +50,8 @@ pub struct Move {
 
 #[derive(Deserialize, Serialize, GraphQLObject)]
 pub struct Pokemon {
-    id: i32,
-    name: String,
-    moves: Vec<Move>,
-    types: Vec<Type>,
+    pub id: i32,
+    pub name: String,
+    pub moves: Vec<Move>,
+    pub types: Vec<Type>,
 }

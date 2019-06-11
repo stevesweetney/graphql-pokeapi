@@ -1,4 +1,6 @@
-use juniper::{EmptyMutation, GraphQLEnum, GraphQLObject};
+use crate::api::{pokemon_query, QueryParam};
+use crate::types::convert;
+use juniper::{EmptyMutation, FieldResult, GraphQLEnum, GraphQLObject};
 use serde::{Deserialize, Serialize};
 use strum_macros::EnumString;
 
@@ -54,4 +56,28 @@ pub struct Pokemon {
     pub name: String,
     pub moves: Vec<Move>,
     pub types: Vec<Type>,
+}
+
+pub struct Query;
+
+#[juniper::object]
+impl Query {
+    fn pokemon(id: Option<i32>, name: Option<String>) -> FieldResult<Pokemon> {
+        let pokemon_res = match (id, name) {
+            (Some(val), _) => pokemon_query(QueryParam::Id(val)),
+            (None, Some(val)) => pokemon_query(QueryParam::Name(&val)),
+            // Default to showing the pokemon with id 1
+            // if no args are present
+            _ => pokemon_query(QueryParam::Id(1)),
+        }?;
+
+        let p = convert::response_to_pokemon(pokemon_res);
+        Ok(p)
+    }
+}
+
+pub type Schema = juniper::RootNode<'static, Query, EmptyMutation<()>>;
+
+pub fn create_schema() -> Schema {
+    Schema::new(Query, EmptyMutation::new())
 }

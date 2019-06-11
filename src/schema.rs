@@ -1,7 +1,8 @@
-use juniper::{GraphQLEnum, GraphQLObject};
+use juniper::{EmptyMutation, GraphQLEnum, GraphQLObject};
 use serde::{Deserialize, Serialize};
+use strum_macros::EnumString;
 
-#[derive(Deserialize, Serialize, GraphQLEnum)]
+#[derive(Deserialize, EnumString, Serialize, GraphQLEnum)]
 pub enum Type {
     #[graphql(name = "normal")]
     Normal,
@@ -43,9 +44,8 @@ pub enum Type {
 
 #[derive(Deserialize, Serialize, GraphQLObject)]
 pub struct Move {
-    id: i32,
-    name: String,
-    effect: String,
+    pub name: String,
+    pub url: String,
 }
 
 #[derive(Deserialize, Serialize, GraphQLObject)]

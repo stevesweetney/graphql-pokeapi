@@ -48,21 +48,10 @@ pub struct Move {
     effect: String,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, GraphQLObject)]
 pub struct Pokemon {
     id: i32,
     name: String,
     moves: Vec<Move>,
     types: Vec<Type>,
-}
-
-#[juniper::object]
-impl Pokemon {
-    fn id(&self) -> i32 {
-        self.id
-    }
-
-    fn name(&self) -> &str {
-        &self.name
-    }
 }

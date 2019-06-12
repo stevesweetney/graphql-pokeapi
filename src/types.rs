@@ -74,6 +74,19 @@ pub mod convert {
             moves,
         }
     }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+        use serde_json;
+        #[test]
+        fn test_response_to_pokemon() {
+            let sample_data = include_str!("../samples/pokemon.json");
+            let json = serde_json::from_str::<PokemonResponse>(sample_data);
+            assert!(json.is_ok());
+            let _pokemon = response_to_pokemon(json.unwrap());
+        }
+    }
 }
 
 #[cfg(test)]

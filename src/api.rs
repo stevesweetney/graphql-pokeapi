@@ -26,7 +26,7 @@ pub enum QueryParam<'a> {
 impl<'a> fmt::Display for QueryParam<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            QueryParam::Name(name) => write!(f, "{:?}", name),
+            QueryParam::Name(name) => write!(f, "{}", name),
             QueryParam::Id(id) => write!(f, "{:?}", id),
         }
     }
